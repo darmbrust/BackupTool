@@ -1,0 +1,178 @@
+<!--
+   Copyright 2006-2008 Daniel Armbrust 
+   Licensed under the Apache License, Version 2.0 (the "License"); 
+   you may not use this file except in compliance with the License. 
+   You may obtain a copy of the License at
+   
+    http://www.apache.org/licenses/LICENSE-2.0
+     
+   Unless required by applicable law or agreed to in writing, software 
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+   See the License for the specific language governing permissions and 
+   limitations under the License.
+-->
+<project name="Backup Tool" default="all" basedir=".">
+	<description>
+		Buildfile for the Backup Tool
+	</description>
+	<!-- set global properties for this build -->
+	<property name="src" location="src" />
+	<property name="lib" location="extLib" />
+	<property name="antBuild" location="antBuild" />
+	<property name="classes" location="${antBuild}/classes" />
+	<property name="dist" location="${antBuild}/dist" />
+	<property name="webstart.dir" location="${antBuild}/webstart" />
+
+	<!--Sets up the classpaths correctly, not meant to be called directly-->
+	<target name="init">
+		<echo>Constructing classpath</echo>
+
+		<available file="myKeystore" type="file" property="keystore.exists" />
+		<path id="classpath">
+			<fileset dir="${lib}" id="libs">
+				<!--//used for jarDepen-->
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${lib}" id="swt-windows">
+				<include name="swt/swt-windows.jar" /> <!-- windows swt is good enough to compile on all platforms-->
+			</fileset>
+		</path>
+		
+		<taskdef name="jsmoothgen"
+								     classname="net.charabia.jsmoothgen.ant.JSmoothGen"
+								     classpath="JSmooth/JSmooth libraries/jsmoothgen-ant.jar"/>
+	</target>
+
+
+	<target name="clean" depends="init" description="clean up">
+		<!-- Delete the ${build} and ${dist} directory trees -->
+		<delete dir="${antBuild}" />
+		<delete dir="${javadocs}" />
+		<delete dir="${bin}" failonerror="false" />
+	</target>
+
+	<target name="compile" depends="init" description="compile the source ">
+		<mkdir dir="${classes}" />
+
+		<copy todir="${classes}">
+			<fileset dir="${src}">
+				<include name="**/*.gif" />
+			</fileset>
+		</copy>
+		
+		<copy todir="${classes}/" file="license.txt"/>
+
+		<!-- Compile the java code from ${src} into ${classes} -->
+		<javac debug="true" srcdir="${src}" destdir="${classes}" target="1.5" source="1.5">
+			<classpath refid="classpath" />
+		</javac>
+	</target>
+
+	<target name="jarDepen" depends="init, compile" description="generate the jar file plus the dependancies">
+		<!-- Put everything in ${build} into .jar file -->
+		<mkdir dir="${dist}" />
+		<copy todir="${dist}" file="license.txt"/>
+		<jar jarfile="${dist}/BackupTool-Windows.jar" basedir="${classes}" duplicate="preserve">
+			<manifest>
+				<attribute name="Main-Class" value="backup.Launcher" />
+				<attribute name="Author" value="Daniel Armbrust - daniel.armbrust@gmail.com"/>
+			</manifest>
+			<zipgroupfileset refid="libs"/>
+			<zipgroupfileset dir="${lib}/swt/">
+				<filename name="swt-windows.jar"/>
+			</zipgroupfileset>
+		</jar>
+		
+		<jar jarfile="${dist}/BackupTool-Linux-x86.jar" basedir="${classes}" duplicate="preserve">
+			<manifest>
+				<attribute name="Main-Class" value="backup.Launcher" />
+				<attribute name="Author" value="Daniel Armbrust - daniel.armbrust@gmail.com"/>
+			</manifest>
+			<zipgroupfileset refid="libs"/>
+			<zipgroupfileset dir="${lib}/swt/">
+				<filename name="linux-x86-swt.jar"/>
+			</zipgroupfileset>
+		</jar>
+		
+		<jar jarfile="${dist}/BackupTool-Linux-x86_64.jar" basedir="${classes}" duplicate="preserve">
+			<manifest>
+				<attribute name="Main-Class" value="backup.Launcher" />
+				<attribute name="Author" value="Daniel Armbrust - daniel.armbrust@gmail.com"/>
+			</manifest>
+			<zipgroupfileset refid="libs"/>
+			<zipgroupfileset dir="${lib}/swt/">
+				<filename name="linux-x86_64-swt.jar"/>
+			</zipgroupfileset>
+		</jar>
+	</target>
+
+	<target name="webstart" depends="jarDepen" if="keystore.exists">
+		<mkdir dir="${webstart.dir}"/>
+		
+		<copy todir="${webstart.dir}" >
+			<fileset dir="${dist}">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+
+		<signjar alias="dan" keystore="myKeystore" storepass="myKeystorePass">
+			<fileset dir="${webstart.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+		</signjar>
+
+		<copy file="BackupTool.jnlp" todir="${webstart.dir}" />
+		<copy file="${src}/icons/icon.gif" todir="${webstart.dir}" />
+	</target>
+
+	<target name="launchers" description="Builds the Launchers">
+
+		<jsmoothgen project="JSmooth/JSmoothDeploy.jsmooth" skeletonroot="JSmooth/JSmooth libraries/skeletons" />
+
+		<echo file="${dist}/BackupTool.bat">
+java -jar BackupTool-Windows.jar
+		</echo>
+
+		<fixcrlf srcdir="${dist}" eol="crlf" includes="*.bat" />
+		
+		<zip destfile="${dist}/BackupTool-Windows.zip">
+       		<fileset dir="${dist}/">
+				<include name="BackupTool.bat"/>
+       			<include name="BackupTool.exe"/>
+       			<include name="BackupTool-Windows.jar"/>
+       			<include name="license.txt"/>
+			</fileset>
+		</zip>
+		
+		<echo file="${dist}/BackupTool-x86.sh">
+java -jar BackupTool-Linux-x86.jar
+		</echo>
+		
+		<echo file="${dist}/BackupTool-x86_64.sh">
+java -jar BackupTool-Linux-x86_64.jar
+		</echo>
+
+		<fixcrlf srcdir="${dist}" eol="lf" includes="*.sh" />
+		
+		<zip destfile="${dist}/BackupTool-Linux-x86.zip">
+       		<fileset dir="${dist}/">
+				<include name="BackupTool-x86.sh"/>
+       			<include name="BackupTool-Linux-x86.jar"/>
+       			<include name="license.txt"/>
+			</fileset>
+			
+		</zip>
+		
+		<zip destfile="${dist}/BackupTool-Linux-x86_64.zip">
+       		<fileset dir="${dist}/">
+				<include name="BackupTool-x86_64.sh"/>
+       			<include name="BackupTool-Linux-x86_64.jar"/>
+       			<include name="license.txt"/>
+			</fileset>
+		</zip>
+	</target>
+
+
+	<target name="all" depends="init, clean, compile, jarDepen, launchers, webstart" description="full build" />
+</project>

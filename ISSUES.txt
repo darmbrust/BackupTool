@@ -1,0 +1,5 @@
+Known Issues:
+
+Automount Windows drives - not working right
+
+Why does windows recopy what linux did?  Whats different?

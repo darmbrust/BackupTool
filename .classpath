@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="extLib/jdom.jar"/>
+	<classpathentry kind="lib" path="extLib/org.eclipse.jface_3.2.0.I20060605-1400.jar"/>
+	<classpathentry kind="lib" path="extLib/org.eclipse.jface.text_3.2.0.v20060605-1400.jar"/>
+	<classpathentry kind="lib" path="extLib/org.eclipse.core.runtime_3.2.0.v20060603.jar"/>
+	<classpathentry kind="lib" path="extLib/org.eclipse.equinox.common_3.2.0.v20060603.jar"/>
+	<classpathentry kind="lib" path="extLib/org.eclipse.core.commands_3.2.0.I20060605-1400.jar"/>
+	<classpathentry kind="lib" path="extLib/swt/linux-x86_64-swt.jar"/>
+	<classpathentry kind="output" path="classes"/>
+</classpath>

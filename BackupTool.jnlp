@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp
+  spec="1.0+"
+  codebase="http://armbrust.dyndns.org/programs/backup/"
+  href="BackupTool.jnlp">
+  <information>
+    <title>Backup Tool</title>
+    <vendor>Daniel Armbrust</vendor>
+    <homepage href="http://armbrust.dyndns.org/programs/"/>
+    <description>Backup Tool</description>
+    <!--icon href="images/swingset2.jpg"/-->
+    <icon kind="splash" href="icon.gif"/>
+    <offline-allowed/>
+  </information>
+  <security>
+      <all-permissions/>
+  </security>
+  <resources>
+    <j2se version="1.5+"/>
+  </resources>
+  <resources os="Windows">
+    <jar href="BackupTool-Windows.jar"/>
+  </resources>
+  <resources os="Linux" arch="x86">
+    <jar href="BackupTool-Linux-x86.jar"/>
+  </resources>
+  <resources os="Linux" arch="i386">
+    <jar href="BackupTool-Linux-x86.jar"/>
+  </resources>
+  <resources os="Linux" arch="i686">
+    <jar href="BackupTool-Linux-x86.jar"/>
+  </resources>
+  <resources os="Linux" arch="amd64">
+    <jar href="BackupTool-Linux-x86_64.jar"/>
+  </resources>
+  <application-desc main-class="backup.Launcher"/>
+</jnlp> 
