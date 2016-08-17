@@ -13,11 +13,12 @@ Features
 - Gives complete summary of what has changed
 - Its Free!
 
-Requirements
+**Requirements**
 
 You will need to have Java version 1.5 or newer installed to use this program. 
 
-Download
+**Download**
+
 (you agree to [this](LICENSE) license by downloading this software)
 
 Click [here](http://armbrust.dyndns.org/programs/backup/BackupTool.jnlp) to launch the program with webstart .
@@ -31,11 +32,13 @@ Otherwise, you can download a zip package for your platform:
 - [BackupTool-Windows.zip](http://armbrust.dyndns.org/programs/backup/BackupTool-Windows.zip)
 
 Unzip this to a place of your choosing, and run the executeable for your platform.
-Command Options
+
+**Command Options**
 
 If you pass in '-rc' as a command line parameter - it will run the pre-configured backup without displaying a GUI.
 
 If you pass in a '-rg' as a command line parameter - it will not display the configuration window - it will just run the pre-configured backup, with a gui window for status information. This is useful if you want to schedule the backup to run every day.
-Bugs
 
-Gasp! Yes, this software may have bugs. But I don't know of any right now. If you find one, let me know. You can report them here: https://github.com/darmbrust/BackupTool/issues
+**Bugs**
+
+Gasp! Yes, this software may have bugs.  You can report them here: https://github.com/darmbrust/BackupTool/issues
