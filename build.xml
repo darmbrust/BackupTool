@@ -160,7 +160,7 @@ java -jar BackupTool-Windows.jar
 			<fileset dir="${dist}/">
 				<include name="BackupTool.bat"/>
 				<include name="BackupTool.exe"/>
-				<include name="BackupTool-Windows.jar"/>
+				<include name="BackupTool-Windows-x64.jar"/>
 				<include name="LICENSE"/>
 			</fileset>
 		</zip>
