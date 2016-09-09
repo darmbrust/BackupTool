@@ -61,7 +61,7 @@
 			</fileset>
 		</copy>
 		
-		<copy todir="${classes}/" file="license.txt"/>
+		<copy todir="${classes}/" file="LICENSE"/>
 
 		<!-- Compile the java code from ${src} into ${classes} -->
 		<javac debug="true" srcdir="${src}" destdir="${classes}" target="1.5" source="1.5">
@@ -72,7 +72,7 @@
 	<target name="jarDepen" depends="init, compile" description="generate the jar file plus the dependancies">
 		<!-- Put everything in ${build} into .jar file -->
 		<mkdir dir="${dist}" />
-		<copy todir="${dist}" file="license.txt"/>
+		<copy todir="${dist}" file="LICENSE"/>
 		<jar jarfile="${dist}/BackupTool-Windows.jar" basedir="${classes}" duplicate="preserve">
 			<manifest>
 				<attribute name="Main-Class" value="backup.Launcher" />
@@ -81,6 +81,17 @@
 			<zipgroupfileset refid="libs"/>
 			<zipgroupfileset dir="${lib}/swt/">
 				<filename name="swt-windows.jar"/>
+			</zipgroupfileset>
+		</jar>
+		
+		<jar jarfile="${dist}/BackupTool-Windows-x64.jar" basedir="${classes}" duplicate="preserve">
+			<manifest>
+				<attribute name="Main-Class" value="backup.Launcher" />
+				<attribute name="Author" value="Daniel Armbrust - daniel.armbrust@gmail.com"/>
+			</manifest>
+			<zipgroupfileset refid="libs"/>
+			<zipgroupfileset dir="${lib}/swt/">
+				<filename name="swt-windows-x64.jar"/>
 			</zipgroupfileset>
 		</jar>
 		
@@ -137,11 +148,20 @@ java -jar BackupTool-Windows.jar
 		<fixcrlf srcdir="${dist}" eol="crlf" includes="*.bat" />
 		
 		<zip destfile="${dist}/BackupTool-Windows.zip">
-       		<fileset dir="${dist}/">
+			<fileset dir="${dist}/">
 				<include name="BackupTool.bat"/>
-       			<include name="BackupTool.exe"/>
-       			<include name="BackupTool-Windows.jar"/>
-       			<include name="license.txt"/>
+				<include name="BackupTool.exe"/>
+				<include name="BackupTool-Windows.jar"/>
+				<include name="LICENSE"/>
+			</fileset>
+		</zip>
+		
+		<zip destfile="${dist}/BackupTool-Windows-x64.zip">
+			<fileset dir="${dist}/">
+				<include name="BackupTool.bat"/>
+				<include name="BackupTool.exe"/>
+				<include name="BackupTool-Windows.jar"/>
+				<include name="LICENSE"/>
 			</fileset>
 		</zip>
 		
@@ -159,7 +179,7 @@ java -jar BackupTool-Linux-x86_64.jar
        		<fileset dir="${dist}/">
 				<include name="BackupTool-x86.sh"/>
        			<include name="BackupTool-Linux-x86.jar"/>
-       			<include name="license.txt"/>
+       			<include name="LICENSE"/>
 			</fileset>
 			
 		</zip>
@@ -168,7 +188,7 @@ java -jar BackupTool-Linux-x86_64.jar
        		<fileset dir="${dist}/">
 				<include name="BackupTool-x86_64.sh"/>
        			<include name="BackupTool-Linux-x86_64.jar"/>
-       			<include name="license.txt"/>
+       			<include name="LICENSE"/>
 			</fileset>
 		</zip>
 	</target>
