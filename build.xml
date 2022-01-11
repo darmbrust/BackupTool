@@ -22,26 +22,23 @@
 	<property name="antBuild" location="antBuild" />
 	<property name="classes" location="${antBuild}/classes" />
 	<property name="dist" location="${antBuild}/dist" />
-	<property name="webstart.dir" location="${antBuild}/webstart" />
 
 	<!--Sets up the classpaths correctly, not meant to be called directly-->
 	<target name="init">
 		<echo>Constructing classpath</echo>
 
-		<available file="myKeystore" type="file" property="keystore.exists" />
 		<path id="classpath">
 			<fileset dir="${lib}" id="libs">
 				<!--//used for jarDepen-->
 				<include name="*.jar" />
 			</fileset>
 			<fileset dir="${lib}" id="swt-windows">
-				<include name="swt/swt-windows.jar" /> <!-- windows swt is good enough to compile on all platforms-->
+				<include name="swt/swt-windows.jar" />
+				<!-- windows swt is good enough to compile on all platforms-->
 			</fileset>
 		</path>
-		
-		<taskdef name="jsmoothgen"
-								     classname="net.charabia.jsmoothgen.ant.JSmoothGen"
-								     classpath="JSmooth/JSmooth libraries/jsmoothgen-ant.jar"/>
+
+		<taskdef name="jsmoothgen" classname="net.charabia.jsmoothgen.ant.JSmoothGen" classpath="JSmooth/JSmooth libraries/jsmoothgen-ant.jar" />
 	</target>
 
 
@@ -60,11 +57,11 @@
 				<include name="**/*.gif" />
 			</fileset>
 		</copy>
-		
-		<copy todir="${classes}/" file="LICENSE"/>
+
+		<copy todir="${classes}/" file="LICENSE" />
 
 		<!-- Compile the java code from ${src} into ${classes} -->
-		<javac debug="true" srcdir="${src}" destdir="${classes}" target="1.5" source="1.5">
+		<javac debug="true" srcdir="${src}" destdir="${classes}" target="1.8" source="1.8">
 			<classpath refid="classpath" />
 		</javac>
 	</target>
@@ -72,69 +69,50 @@
 	<target name="jarDepen" depends="init, compile" description="generate the jar file plus the dependancies">
 		<!-- Put everything in ${build} into .jar file -->
 		<mkdir dir="${dist}" />
-		<copy todir="${dist}" file="LICENSE"/>
+		<copy todir="${dist}" file="LICENSE" />
 		<jar jarfile="${dist}/BackupTool-Windows.jar" basedir="${classes}" duplicate="preserve">
 			<manifest>
 				<attribute name="Main-Class" value="backup.Launcher" />
-				<attribute name="Author" value="Daniel Armbrust - daniel.armbrust@gmail.com"/>
+				<attribute name="Author" value="Daniel Armbrust - daniel.armbrust@gmail.com" />
 			</manifest>
-			<zipgroupfileset refid="libs"/>
+			<zipgroupfileset refid="libs" />
 			<zipgroupfileset dir="${lib}/swt/">
-				<filename name="swt-windows.jar"/>
+				<filename name="swt-windows.jar" />
 			</zipgroupfileset>
 		</jar>
-		
+
 		<jar jarfile="${dist}/BackupTool-Windows-x64.jar" basedir="${classes}" duplicate="preserve">
 			<manifest>
 				<attribute name="Main-Class" value="backup.Launcher" />
-				<attribute name="Author" value="Daniel Armbrust - daniel.armbrust@gmail.com"/>
+				<attribute name="Author" value="Daniel Armbrust - daniel.armbrust@gmail.com" />
 			</manifest>
-			<zipgroupfileset refid="libs"/>
+			<zipgroupfileset refid="libs" />
 			<zipgroupfileset dir="${lib}/swt/">
-				<filename name="swt-windows-x64.jar"/>
+				<filename name="swt-windows-x64.jar" />
 			</zipgroupfileset>
 		</jar>
-		
+
 		<jar jarfile="${dist}/BackupTool-Linux-x86.jar" basedir="${classes}" duplicate="preserve">
 			<manifest>
 				<attribute name="Main-Class" value="backup.Launcher" />
-				<attribute name="Author" value="Daniel Armbrust - daniel.armbrust@gmail.com"/>
+				<attribute name="Author" value="Daniel Armbrust - daniel.armbrust@gmail.com" />
 			</manifest>
-			<zipgroupfileset refid="libs"/>
+			<zipgroupfileset refid="libs" />
 			<zipgroupfileset dir="${lib}/swt/">
-				<filename name="linux-x86-swt.jar"/>
+				<filename name="linux-x86-swt.jar" />
 			</zipgroupfileset>
 		</jar>
-		
+
 		<jar jarfile="${dist}/BackupTool-Linux-x86_64.jar" basedir="${classes}" duplicate="preserve">
 			<manifest>
 				<attribute name="Main-Class" value="backup.Launcher" />
-				<attribute name="Author" value="Daniel Armbrust - daniel.armbrust@gmail.com"/>
+				<attribute name="Author" value="Daniel Armbrust - daniel.armbrust@gmail.com" />
 			</manifest>
-			<zipgroupfileset refid="libs"/>
+			<zipgroupfileset refid="libs" />
 			<zipgroupfileset dir="${lib}/swt/">
-				<filename name="linux-x86_64-swt.jar"/>
+				<filename name="linux-x86_64-swt.jar" />
 			</zipgroupfileset>
 		</jar>
-	</target>
-
-	<target name="webstart" depends="jarDepen" if="keystore.exists">
-		<mkdir dir="${webstart.dir}"/>
-		
-		<copy todir="${webstart.dir}" >
-			<fileset dir="${dist}">
-				<include name="*.jar"/>
-			</fileset>
-		</copy>
-
-		<signjar alias="dan" keystore="myKeystore" storepass="myKeystorePass">
-			<fileset dir="${webstart.dir}">
-				<include name="**/*.jar" />
-			</fileset>
-		</signjar>
-
-		<copy file="BackupTool.jnlp" todir="${webstart.dir}" />
-		<copy file="${src}/icons/icon.gif" todir="${webstart.dir}" />
 	</target>
 
 	<target name="launchers" description="Builds the Launchers">
@@ -146,53 +124,53 @@ java -jar BackupTool-Windows.jar
 		</echo>
 
 		<fixcrlf srcdir="${dist}" eol="crlf" includes="*.bat" />
-		
+
 		<zip destfile="${dist}/BackupTool-Windows.zip">
 			<fileset dir="${dist}/">
-				<include name="BackupTool.bat"/>
-				<include name="BackupTool.exe"/>
-				<include name="BackupTool-Windows.jar"/>
-				<include name="LICENSE"/>
+				<include name="BackupTool.bat" />
+				<include name="BackupTool.exe" />
+				<include name="BackupTool-Windows.jar" />
+				<include name="LICENSE" />
 			</fileset>
 		</zip>
-		
+
 		<zip destfile="${dist}/BackupTool-Windows-x64.zip">
 			<fileset dir="${dist}/">
-				<include name="BackupTool.bat"/>
-				<include name="BackupTool.exe"/>
-				<include name="BackupTool-Windows-x64.jar"/>
-				<include name="LICENSE"/>
+				<include name="BackupTool.bat" />
+				<include name="BackupTool.exe" />
+				<include name="BackupTool-Windows-x64.jar" />
+				<include name="LICENSE" />
 			</fileset>
 		</zip>
-		
+
 		<echo file="${dist}/BackupTool-x86.sh">
 java -jar BackupTool-Linux-x86.jar
 		</echo>
-		
+
 		<echo file="${dist}/BackupTool-x86_64.sh">
 java -jar BackupTool-Linux-x86_64.jar
 		</echo>
 
 		<fixcrlf srcdir="${dist}" eol="lf" includes="*.sh" />
-		
+
 		<zip destfile="${dist}/BackupTool-Linux-x86.zip">
-       		<fileset dir="${dist}/">
-				<include name="BackupTool-x86.sh"/>
-       			<include name="BackupTool-Linux-x86.jar"/>
-       			<include name="LICENSE"/>
+			<fileset dir="${dist}/">
+				<include name="BackupTool-x86.sh" />
+				<include name="BackupTool-Linux-x86.jar" />
+				<include name="LICENSE" />
 			</fileset>
-			
+
 		</zip>
-		
+
 		<zip destfile="${dist}/BackupTool-Linux-x86_64.zip">
-       		<fileset dir="${dist}/">
-				<include name="BackupTool-x86_64.sh"/>
-       			<include name="BackupTool-Linux-x86_64.jar"/>
-       			<include name="LICENSE"/>
+			<fileset dir="${dist}/">
+				<include name="BackupTool-x86_64.sh" />
+				<include name="BackupTool-Linux-x86_64.jar" />
+				<include name="LICENSE" />
 			</fileset>
 		</zip>
 	</target>
 
 
-	<target name="all" depends="init, clean, compile, jarDepen, launchers, webstart" description="full build" />
+	<target name="all" depends="init, clean, compile, jarDepen, launchers" description="full build" />
 </project>

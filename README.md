@@ -15,21 +15,17 @@ Features
 
 **Requirements**
 
-You will need to have Java version 1.5 or newer installed to use this program. 
+You will need to have [Java](https://adoptopenjdk.net/) version 1.8 or newer installed to use this program. 
 
 **Download**
 
 (you agree to [this](LICENSE) license by downloading this software)
 
-Click [here](http://armbrust.dyndns.org/programs/backup/BackupTool.jnlp) to launch the program with webstart .
 
-Note: When you first start the program, java will recommend that you not run the program because their is no proper signing authority. You will just have trust that no one has hacked my webserver, and replaced the program with a malicious one.
-
-Otherwise, you can download a zip package for your platform:
-
-- [BackupTool-Linux-x86.zip](http://armbrust.dyndns.org/programs/backup/BackupTool-Linux-x86.zip)
-- [BackupTool-Linux-x86_64.zip](http://armbrust.dyndns.org/programs/backup/BackupTool-Linux-x86_64.zip)
-- [BackupTool-Windows.zip](http://armbrust.dyndns.org/programs/backup/BackupTool-Windows.zip)
+- [BackupTool-Linux-x86.zip](https://github.com/darmbrust/BackupTool/releases/download/1/BackupTool-Linux-x86.zip)
+- [BackupTool-Linux-x86_64.zip](https://github.com/darmbrust/BackupTool/releases/download/1/BackupTool-Linux-x86_64.zip)
+- [BackupTool-Windows.zip](https://github.com/darmbrust/BackupTool/releases/download/1/BackupTool-Windows.zip)
+- [BackupTool-Windows-x64.zip](https://github.com/darmbrust/BackupTool/releases/download/1/BackupTool-Windows-x64.zip)
 
 Unzip this to a place of your choosing, and run the executeable for your platform.
 
